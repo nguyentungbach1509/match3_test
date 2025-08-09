@@ -25,7 +25,7 @@ public class Board
 
     private int m_matchMin;
 
-    public Board(Transform transform, GameSettings gameSettings)
+    public Board(Transform transform, GameSettings gameSettings, bool isRestart = false)
     {
         m_root = transform;
 
@@ -36,10 +36,10 @@ public class Board
 
         m_cells = new Cell[boardSizeX, boardSizeY];
 
-        CreateBoard();
+        CreateBoard(isRestart);
     }
 
-    private void CreateBoard()
+    private void CreateBoard(bool isRestart=false)
     {
         Vector3 origin = new Vector3(-boardSizeX * 0.5f + 0.5f, -boardSizeY * 0.5f + 0.5f, 0f);
         GameObject prefabBG = Resources.Load<GameObject>(Constants.PREFAB_CELL_BACKGROUND);
@@ -50,11 +50,10 @@ public class Board
                 GameObject go = GameObject.Instantiate(prefabBG);
                 go.transform.position = origin + new Vector3(x, y, 0f);
                 go.transform.SetParent(m_root);
-
                 Cell cell = go.GetComponent<Cell>();
                 cell.Setup(x, y);
-
                 m_cells[x, y] = cell;
+                
             }
         }
 
@@ -72,7 +71,7 @@ public class Board
 
     }
 
-    internal void Fill()
+    internal void Fill(bool isRestart=false)
     {
         for (int x = 0; x < boardSizeX; x++)
         {
@@ -100,9 +99,11 @@ public class Board
                     }
                 }
 
-                item.SetType(Utils.GetRandomNormalTypeExcept(types.ToArray()));
+                item.SetType(isRestart? SaveLevel.GetTexture(x,y):Utils.GetRandomNormalTypeExcept(types.ToArray()));
                 item.SetView();
                 item.SetViewRoot(m_root);
+                
+                if (!isRestart) SaveLevel.AddTexture(x, y, item.ItemType);
 
                 cell.Assign(item);
                 cell.ApplyItemPosition(false);

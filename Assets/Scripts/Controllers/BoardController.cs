@@ -31,7 +31,7 @@ public class BoardController : MonoBehaviour
 
     private bool m_gameOver;
 
-    public void StartGame(GameManager gameManager, GameSettings gameSettings)
+    public void StartGame(GameManager gameManager, GameSettings gameSettings, bool isRestart=false)
     {
         m_gameManager = gameManager;
 
@@ -41,14 +41,14 @@ public class BoardController : MonoBehaviour
 
         m_cam = Camera.main;
 
-        m_board = new Board(this.transform, gameSettings);
+        m_board = new Board(this.transform, gameSettings, isRestart);
 
-        Fill();
+        Fill(isRestart);
     }
 
-    private void Fill()
+    private void Fill(bool isRestart=false)
     {
-        m_board.Fill();
+        m_board.Fill(isRestart);
         FindMatchesAndCollapse();
     }
 
@@ -88,7 +88,6 @@ public class BoardController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("One CLieck");
             var hit = Physics2D.Raycast(m_cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {

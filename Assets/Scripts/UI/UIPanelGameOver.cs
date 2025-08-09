@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class UIPanelGameOver : MonoBehaviour, IMenu
 {
     [SerializeField] private Button btnClose;
+    [SerializeField] private Button btnRestart;
 
     private UIMainManager m_mngr;
 
     private void Awake()
     {
         btnClose.onClick.AddListener(OnClickClose);
+        btnRestart.onClick.AddListener(OnClickRestart);
     }
 
     private void OnDestroy()
@@ -21,9 +23,15 @@ public class UIPanelGameOver : MonoBehaviour, IMenu
 
     private void OnClickClose()
     {
+        SaveLevel.Clear();
         m_mngr.ShowMainMenu();
     }
 
+    private void OnClickRestart()
+    {
+        m_mngr.GameManager.ClearLevel();
+        m_mngr.RestartLevel();
+    }
     public void Hide()
     {
         this.gameObject.SetActive(false);

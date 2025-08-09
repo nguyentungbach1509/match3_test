@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+
 
 [Serializable]
 public class Item
@@ -12,6 +11,9 @@ public class Item
     public Transform View { get; private set; }
     private SpriteRenderer cachedSprite;
     private ListItemTextureSO textureSO;
+    private string keyPrefab;
+
+    public string KeyPrefab => keyPrefab;
 
     public virtual void SetView()
     {
@@ -23,7 +25,7 @@ public class Item
             GameObject prefab = Resources.Load<GameObject>(prefabname);
             if (prefab)
             {
-                string keyPrefab = prefabname.Split('/')[1];
+                keyPrefab = prefabname.Split('/')[1];
                 View = GameObject.Instantiate(prefab).transform;
                 cachedSprite = View.GetComponent<SpriteRenderer>();
                 cachedSprite.sprite = textureSO.GetSprite(keyPrefab, TypeTexture.Fish);
@@ -31,7 +33,9 @@ public class Item
         }
     }
 
+
     protected virtual string GetPrefabName() { return string.Empty; }
+    
     private void LoadTextureData()
     {
         if (textureSO != null) return;
