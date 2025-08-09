@@ -16,7 +16,7 @@ public class UIMainManager : MonoBehaviour
         m_menuList = GetComponentsInChildren<IMenu>(true);
     }
 
-    void Start()
+    public void Setup()
     {
         for (int i = 0; i < m_menuList.Length; i++)
         {
@@ -30,7 +30,7 @@ public class UIMainManager : MonoBehaviour
         m_gameManager.SetState(GameManager.eStateGame.MAIN_MENU);
     }
 
-    void Update()
+    public void UpdateUI()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {

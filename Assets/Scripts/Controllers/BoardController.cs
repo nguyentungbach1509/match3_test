@@ -70,8 +70,9 @@ public class BoardController : MonoBehaviour
     }
 
 
-    public void Update()
+    public void UpdateBoard()
     {
+
         if (m_gameOver) return;
         if (IsBusy) return;
 
@@ -87,6 +88,7 @@ public class BoardController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("One CLieck");
             var hit = Physics2D.Raycast(m_cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {

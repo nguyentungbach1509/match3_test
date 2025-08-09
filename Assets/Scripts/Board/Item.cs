@@ -10,7 +10,7 @@ public class Item
     public Cell Cell { get; private set; }
 
     public Transform View { get; private set; }
-
+    private SpriteRenderer cachedSprite;
 
     public virtual void SetView()
     {
@@ -22,6 +22,7 @@ public class Item
             if (prefab)
             {
                 View = GameObject.Instantiate(prefab).transform;
+                cachedSprite = View.GetComponent<SpriteRenderer>();
             }
         }
     }
@@ -60,10 +61,9 @@ public class Item
     {
         if (View == null) return;
 
-        SpriteRenderer sp = View.GetComponent<SpriteRenderer>();
-        if (sp)
+        if (cachedSprite)
         {
-            sp.sortingOrder = 1;
+            cachedSprite.sortingOrder = 1;
         }
     }
 
@@ -72,10 +72,9 @@ public class Item
     {
         if (View == null) return;
 
-        SpriteRenderer sp = View.GetComponent<SpriteRenderer>();
-        if (sp)
+        if (cachedSprite)
         {
-            sp.sortingOrder = 0;
+            cachedSprite.sortingOrder = 0;
         }
 
     }
