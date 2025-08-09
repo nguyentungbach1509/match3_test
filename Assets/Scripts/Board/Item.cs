@@ -11,23 +11,32 @@ public class Item
 
     public Transform View { get; private set; }
     private SpriteRenderer cachedSprite;
+    private ListItemTextureSO textureSO;
 
     public virtual void SetView()
     {
         string prefabname = GetPrefabName();
+        LoadTextureData();
 
         if (!string.IsNullOrEmpty(prefabname))
         {
             GameObject prefab = Resources.Load<GameObject>(prefabname);
             if (prefab)
             {
+                string keyPrefab = prefabname.Split('/')[1];
                 View = GameObject.Instantiate(prefab).transform;
                 cachedSprite = View.GetComponent<SpriteRenderer>();
+                cachedSprite.sprite = textureSO.GetSprite(keyPrefab, TypeTexture.Fish);
             }
         }
     }
 
     protected virtual string GetPrefabName() { return string.Empty; }
+    private void LoadTextureData()
+    {
+        if (textureSO != null) return;
+        textureSO = Resources.Load<ListItemTextureSO>(Constants.PREFAB_LIST_TEXTURE);
+    }
 
     public virtual void SetCell(Cell cell)
     {

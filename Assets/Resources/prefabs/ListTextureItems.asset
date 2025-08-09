@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738d5efa54e3adf40bc2cfe8a5e98388, type: 3}
+  m_Name: ListTextureItems
+  m_EditorClassIdentifier: 
+  list:
+  - {fileID: 11400000, guid: f713bdb72fd16864fb95cf8c930660cf, type: 2}
+  - {fileID: 11400000, guid: daa241d7cc3c4a743a9ec779186a3d4b, type: 2}
+  - {fileID: 11400000, guid: a0952edb1deef544a88fca697bd3fbec, type: 2}
+  - {fileID: 11400000, guid: 46e87d8c8eee63c4f815c97320b2e1b0, type: 2}
+  - {fileID: 11400000, guid: b69acbc9ff06db145912b2575de8f3ac, type: 2}
+  - {fileID: 11400000, guid: 8adf7501ff3f0dc42bee757b98f8c589, type: 2}
+  - {fileID: 11400000, guid: db4cc601bbcf10541a167c134372a7cb, type: 2}

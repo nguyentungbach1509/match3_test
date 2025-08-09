@@ -1,4 +1,6 @@
-﻿public class Constants 
+﻿using System.Data.Common;
+
+public class Constants 
 {
     public const string GAME_SETTINGS_PATH = "gamesettings";
 
@@ -23,4 +25,6 @@
     public const string PREFAB_BONUS_VERTICAL = "prefabs/itemBonusVertical";
 
     public const string PREFAB_BONUS_BOMB = "prefabs/itemBonusBomb";
+
+    public const string PREFAB_LIST_TEXTURE = "prefabs/ListTextureItems";
 }
