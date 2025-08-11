@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static NormalItem;
 
 public class Board
 {
@@ -24,6 +25,11 @@ public class Board
     private Transform m_root;
 
     private int m_matchMin;
+
+    private static readonly eNormalType[] allTypes =
+    (eNormalType[])Enum.GetValues(typeof(eNormalType));
+
+    private List<eNormalType> neighbourTypes = new List<eNormalType>(4);
 
     public Board(Transform transform, GameSettings gameSettings, bool isRestart = false)
     {
@@ -139,6 +145,18 @@ public class Board
 
     internal void FillGapsWithNewItems()
     {
+        Dictionary<eNormalType, int> typeCounts = new Dictionary<eNormalType, int>(allTypes.Length);
+        foreach (var t in allTypes) typeCounts[t] = 0;
+
+        for (int i = 0; i < boardSizeX; i++)
+        {
+            for (int j = 0; j < boardSizeY; j++)
+            {
+                var item = m_cells[i, j].Item as NormalItem;
+                if (item != null) typeCounts[item.ItemType]++;
+            }
+        }
+
         for (int x = 0; x < boardSizeX; x++)
         {
             for (int y = 0; y < boardSizeY; y++)
@@ -146,16 +164,52 @@ public class Board
                 Cell cell = m_cells[x, y];
                 if (!cell.IsEmpty) continue;
 
-                NormalItem item = new NormalItem();
+                
+                neighbourTypes.Clear();
+                AddNeighbourType(cell.NeighbourBottom);
+                AddNeighbourType(cell.NeighbourUp);
+                AddNeighbourType(cell.NeighbourLeft);
+                AddNeighbourType(cell.NeighbourRight);
 
-                item.SetType(Utils.GetRandomNormalType());
-                item.SetView();
-                item.SetViewRoot(m_root);
+                
+                eNormalType chosenType = default;
+                int minCount = int.MaxValue;
+                for (int k = 0; k < allTypes.Length; k++)
+                {
+                    var t = allTypes[k];
+                    if (neighbourTypes.Contains(t)) continue;
+                    int count = typeCounts[t];
+                    if (count < minCount)
+                    {
+                        minCount = count;
+                        chosenType = t;
+                    }
+                }
 
-                cell.Assign(item);
+                
+                if (minCount == int.MaxValue)
+                {
+                    chosenType = Utils.GetRandomNormalType();
+                }
+
+                // Spawn item
+                var newItem = new NormalItem();
+                newItem.SetType(chosenType);
+                newItem.SetView();
+                newItem.SetViewRoot(m_root);
+
+                cell.Assign(newItem);
                 cell.ApplyItemPosition(true);
+
+                typeCounts[chosenType]++;
             }
         }
+    }
+
+    private void AddNeighbourType(Cell neighbour)
+    {
+        var item = neighbour?.Item as NormalItem;
+        if (item != null) neighbourTypes.Add(item.ItemType);
     }
 
     internal void ExplodeAllItems()
